@@ -15,11 +15,6 @@
   "lint-staged": {
     "*.{ts,js,vue}": "eslint"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.3.6",
     "@nuxtjs/axios": "^5.3.6",
