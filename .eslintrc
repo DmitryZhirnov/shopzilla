@@ -1,0 +1,20 @@
+{
+  "root": true,
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "legacyDecorators": true
+    }
+  },
+  "extends": ["@nuxtjs"],
+  "globals": {
+    "BigInt": true
+  },
+  "rules": {
+    "no-console": 0,
+    "no-debugger": 0,
+    "semi": 2,
+    "quotes": [2, "double"]
+  }
+}
