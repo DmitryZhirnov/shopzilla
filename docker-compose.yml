@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  nuxt:
+    build: ./app/
+    container_name: shopzilla-website
+    restart: always
+    ports:
+      - "3000:3000"
+    command:
+      "npm run dev"
+  nginx:
+    image: nginx:latest
+    container_name: shopzilla-nginx
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - nuxt

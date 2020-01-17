@@ -1,4 +1,8 @@
 import colors from "vuetify/es5/util/colors"
+import path from 'path'
+import fs from 'fs'
+
+const env = require("dotenv").config()
 
 export default {
   mode: "universal",
@@ -22,7 +26,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#fff" },
+  loading: { color: "red" },
   /*
    ** Global CSS
    */
@@ -49,21 +53,25 @@ export default {
     "@nuxtjs/pwa",
     // Doc: https://github.com/nuxt-community/dotenv-module
     "@nuxtjs/dotenv",
-    "@nuxtjs/proxy"
+    "@nuxtjs/proxy",
+    "@nuxtjs/auth"
   ],
   proxy: {
     "/api": {
-      target: "http://localhost/test",
-      pathRewrite: {
-        "^/api": "/"
-      }
+      target: process.env.LARAVEL_ENDPOINT,
+    },
+    "/oauth": {
+      target: process.env.LARAVEL_ENDPOINT
     }
   },
+  env: env.parsed,
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    proxy: true,
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -92,6 +100,58 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {}
+    extend(config, ctx) { }
+  },
+
+  /** Авторизация */
+  auth: {
+    redirect: {
+      login: "/login",
+      logout: "/",
+      callback: "/login",
+      user: "/"
+    },
+    strategies: {
+      password_grant_custom: {
+        _scheme: "~/auth/schemes/PassportPasswordScheme.js",
+        client_id: process.env.PASSPORT_PASSWORD_GRANT_ID,
+        client_secret: process.env.PASSPORT_PASSWORD_GRANT_SECRET,
+        endpoints: {
+          login: {
+            url: "/oauth/token",
+            method: "post",
+            propertyName: "access_token"
+          },
+          logout: false,
+          user: {
+            url: "/api/user"
+          }
+        }
+      },
+    }
+  },
+  server: {
+    // port: 8081, // default: 3000
+    // host: '0.0.0.0', // default: localhost
+    // https: {
+    //   key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
+    //   cert: fs.readFileSync(path.resolve(__dirname, 'server.crt'))
+    // }
+  },
+  pwa: {
+    manifest: {
+      "name": "ShopZilla - агрегатор скидок",
+      "short_name": "ShopZilla",
+      "theme_color": "#1e5786",
+      "background_color": "#cccccc",
+      "display": "fullscreen",
+      "orientation": "portrait",
+      "scope": "/",
+      "start_url": "/",
+    },
+    workbox:{
+      dev: true,
+      cachingExtensions: ["workbox-images-cache.js"]
+    }
   }
 }

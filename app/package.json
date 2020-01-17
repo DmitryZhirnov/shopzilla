@@ -5,7 +5,7 @@
   "author": "DmitryZhirnov",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts --fix",
+    "dev": "nuxt-ts",
     "build": "nuxt-ts build",
     "generate": "nuxt-ts generate",
     "start": "nuxt-ts start",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.3.6",
+    "@nuxtjs/auth": "^4.8.5",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
